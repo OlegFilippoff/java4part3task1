@@ -73,7 +73,7 @@ class GameManagerTest {
         manager.register(player4);
         manager.register(player6);
 
-        assertThrows(NotRegisteredException.class, () -> manager.round("Fedor","Bob"));
+        assertThrows(NotRegisteredException.class, () -> manager.round("Fedor","Mike"));
 
     }
 }

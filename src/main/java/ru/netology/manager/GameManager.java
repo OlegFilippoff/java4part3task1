@@ -4,23 +4,27 @@ import ru.netology.domain.Player;
 import ru.netology.exceptions.NotRegisteredException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class GameManager {
-    List<Player> players = new ArrayList<>();
+    HashMap<String, Integer> players = new HashMap<>();
 
     public GameManager() {
     }
 
     public void register(Player player) {
-        players.add(player);
+        String key = player.getPlayerName();
+        int value = player.getPlayerStrength();
+        players.put(key, value);
     }
 
-    public boolean matches(String name) {
-        for (Player player : players
+
+    public boolean isRegistered(String playerName) {
+        for (String key : players.keySet()
         ) {
-            if (player.getPlayerName().equals(name)) {
+            if (playerName.equals(key)) {
                 return true;
             }
 
@@ -33,17 +37,20 @@ public class GameManager {
         int player1Strength = 0;
         int player2Strength = 0;
 
-        for (Player player : players
-        ) {
-            if (player.getPlayerName().equals(playerName1)) {
-                player1Strength = player.getPlayerStrength();
-            }
-            if (player.getPlayerName().equals(playerName2)) {
-                player2Strength = player.getPlayerStrength();
-            } else if (!matches(playerName1) || !matches(playerName2)) {
-                throw new NotRegisteredException("One of the Players is not registered yet");
-            }
+        for (String key:
+             players.keySet()) {
+            if (isRegistered(playerName1))
+            player1Strength = players.get(playerName1);
         }
+        for (String key:
+             players.keySet()) {
+            if (isRegistered(playerName2))
+            player2Strength = players.get(playerName2);
+        }
+        if (!isRegistered(playerName1) || !isRegistered(playerName2)) {
+            throw new NotRegisteredException("One of the Players is not registered yet");
+        }
+
         if (player1Strength > player2Strength) {
             System.out.println(1 + ":0 Победа первого игрока");
             return 1;
